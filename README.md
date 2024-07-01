@@ -57,13 +57,16 @@ Ouvrez PowerShell en mode administrateur et exécutez le script :
 
 Téléchargez le script Bash depuis le dépôt GitHub :
 
-```wget https://raw.githubusercontent.com/yankiifr/ScriptWiki/main/deploy_wiki_debian.sh -O deploy_wiki_debian.sh
-    chmod +x deploy_wiki_debian.sh
+```markdown
+wget https://raw.githubusercontent.com/yankiifr/ScriptWiki/main/deploy_wiki_debian.sh -O deploy_wiki_debian.sh
+chmod +x deploy_wiki_debian.sh
 
 ### Étape 2: Exécuter le Script Bash
 
-# Exécutez le script Bash : 
-```./deploy_wiki_debian.sh
+# Exécutez le script Bash :
+ 
+```markdown
+./deploy_wiki_debian.sh
 
 # Le script exécutera les étapes suivantes :
 
