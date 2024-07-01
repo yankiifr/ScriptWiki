@@ -55,6 +55,15 @@ function Show-ASCII-Art {
     Write-Host $Art
 }
 
+function Generate-Password {
+    param (
+        [int]$Length = 16
+    )
+
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
+    -join ((1..$Length) | ForEach-Object { $chars[(Get-Random -Maximum $chars.Length)] })
+}
+
 function Install-Git {
     Show-Progress -Message "Installing Git"
     Start-Process "https://github.com/git-for-windows/git/releases/download/v2.33.0.windows.2/Git-2.33.0-64-bit.exe" -ArgumentList "/SILENT" -Wait
@@ -148,7 +157,8 @@ function Install-WSL {
     Show-Progress -Message "Installing PostgreSQL"
     wsl -d $distro -- sudo apt install -y postgresql
     wsl -d $distro -- sudo service postgresql start
-    wsl -d $distro -- sudo -i -u postgres psql -c "CREATE USER wikijs WITH PASSWORD 'wikijs';"
+    $pgPassword = Generate-Password
+    wsl -d $distro -- sudo -i -u postgres psql -c "CREATE USER wikijs WITH PASSWORD '$pgPassword';"
     wsl -d $distro -- sudo -i -u postgres psql -c "CREATE DATABASE wikijs OWNER wikijs;"
 
     # Installation de Node.js
@@ -160,7 +170,7 @@ function Install-WSL {
     Show-Progress -Message "Configuring Wiki.js"
     wsl -d $distro -- git clone https://github.com/Requarks/wiki.git /etc/wikijs
     wsl -d $distro -- sudo cp /etc/wikijs/config.sample.yml /etc/wikijs/config.yml
-    wsl -d $distro -- sudo sed -i "s/type: postgres/type: postgres\n  host: localhost\n  port: 5432\n  user: wikijs\n  pass: wikijs\n  db: wikijs/" /etc/wikijs/config.yml
+    wsl -d $distro -- sudo sed -i "s/type: postgres/type: postgres\n  host: localhost\n  port: 5432\n  user: wikijs\n  pass: $pgPassword\n  db: wikijs/" /etc/wikijs/config.yml
 
     # Démarrage de Wiki.js
     Show-Progress -Message "Starting Wiki.js"
@@ -168,7 +178,10 @@ function Install-WSL {
 
     # Configuration de SSH (optionnel)
     Show-Progress -Message "Configuring SSH"
-    wsl -d $distro -- sudo apt install -y openssh-client bash-completion
+    $sshPort = Get-Random -Minimum 1024 -Maximum 65535
+    wsl -d $distro -- sudo apt install -y openssh-server
+    wsl -d $distro -- sudo sed -i "s/#Port 22/Port $sshPort/" /etc/ssh/sshd_config
+    wsl -d $distro -- sudo service ssh restart
     wsl -d $distro -- sudo bash -c "echo 'alias magic=\"sudo apt update; sudo apt dist-upgrade --autoremove -y\"' >> /etc/bash.bashrc"
     wsl -d $distro -- sudo bash -c "echo 'HISTTIMEFORMAT=\"%Y-%m-%d %T \"' >> /etc/bash.bashrc"
 
@@ -198,9 +211,9 @@ function Install-WSL {
 SSH Connection Information:
 ===========================
 Username: wikijs
-Password: wikijs
+Password: $pgPassword
 Host: localhost
-Port: 22
+Port: $sshPort
 "@
     $sshInfoPath = "$env:USERPROFILE\ssh_info.txt"
     $sshInfo | Out-File -FilePath $sshInfoPath -Encoding utf8
