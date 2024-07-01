@@ -32,8 +32,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/yankiifr/ScriptWiki/ma
 
 Étape 2: Exécuter le Script PowerShell
 Ouvrez PowerShell en mode administrateur et exécutez le script :
-powershell
-.\deploy_wiki_windows.ps1
+  .\deploy_wiki_windows.ps1
 
 Le script vous guidera à travers les étapes suivantes :
 Activer WSL et la plateforme de machine virtuelle.
