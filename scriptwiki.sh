@@ -144,11 +144,68 @@ function Install-WSL {
     Show-Progress -Message "Installing additional tools"
     wsl -d $distro -- sudo apt install -y curl wget vim
 
+    # Configuration de PostgreSQL
+    Show-Progress -Message "Installing PostgreSQL"
+    wsl -d $distro -- sudo apt install -y postgresql
+    wsl -d $distro -- sudo service postgresql start
+    wsl -d $distro -- sudo -i -u postgres psql -c "CREATE USER wikijs WITH PASSWORD 'wikijs';"
+    wsl -d $distro -- sudo -i -u postgres psql -c "CREATE DATABASE wikijs OWNER wikijs;"
+
+    # Installation de Node.js
+    Show-Progress -Message "Installing Node.js"
+    wsl -d $distro -- curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+    wsl -d $distro -- sudo apt install -y nodejs
+
+    # Clonage et configuration de Wiki.js
+    Show-Progress -Message "Configuring Wiki.js"
+    wsl -d $distro -- git clone https://github.com/Requarks/wiki.git /etc/wikijs
+    wsl -d $distro -- sudo cp /etc/wikijs/config.sample.yml /etc/wikijs/config.yml
+    wsl -d $distro -- sudo sed -i "s/type: postgres/type: postgres\n  host: localhost\n  port: 5432\n  user: wikijs\n  pass: wikijs\n  db: wikijs/" /etc/wikijs/config.yml
+
+    # Démarrage de Wiki.js
+    Show-Progress -Message "Starting Wiki.js"
+    wsl -d $distro -- sudo node /etc/wikijs/server &
+
     # Configuration de SSH (optionnel)
     Show-Progress -Message "Configuring SSH"
     wsl -d $distro -- sudo apt install -y openssh-client bash-completion
     wsl -d $distro -- sudo bash -c "echo 'alias magic=\"sudo apt update; sudo apt dist-upgrade --autoremove -y\"' >> /etc/bash.bashrc"
     wsl -d $distro -- sudo bash -c "echo 'HISTTIMEFORMAT=\"%Y-%m-%d %T \"' >> /etc/bash.bashrc"
+
+    # Configuration de Fail2ban
+    Show-Progress -Message "Installing Fail2ban"
+    wsl -d $distro -- sudo apt install -y fail2ban
+    wsl -d $distro -- sudo systemctl enable fail2ban
+    wsl -d $distro -- sudo systemctl start fail2ban
+
+    # Configuration des mises à jour automatiques
+    Show-Progress -Message "Configuring automatic updates"
+    wsl -d $distro -- sudo apt install -y unattended-upgrades
+    wsl -d $distro -- sudo dpkg-reconfigure --priority=low unattended-upgrades
+    wsl -d $distro -- sudo bash -c "echo 'APT::Periodic::Update-Package-Lists \"1\";' > /etc/apt/apt.conf.d/20auto-upgrades"
+    wsl -d $distro -- sudo bash -c "echo 'APT::Periodic::Download-Upgradeable-Packages \"1\";' >> /etc/apt/apt.conf.d/20auto-upgrades"
+    wsl -d $distro -- sudo bash -c "echo 'APT::Periodic::AutocleanInterval \"7\";' >> /etc/apt/apt.conf.d/20auto-upgrades"
+    wsl -d $distro -- sudo bash -c "echo 'APT::Periodic::Unattended-Upgrade \"1\";' >> /etc/apt/apt.conf.d/20auto-upgrades"
+
+    # Planification des redémarrages réguliers
+    Show-Progress -Message "Scheduling regular reboots"
+    wsl -d $distro -- sudo apt install -y cron
+    wsl -d $distro -- sudo bash -c "(crontab -l 2>/dev/null; echo '0 3 * * 0 /sbin/shutdown -r now') | crontab -"
+
+    # Création d'un fichier texte avec les informations de connexion
+    Show-Progress -Message "Creating SSH info file"
+    $sshInfo = @"
+SSH Connection Information:
+===========================
+Username: wikijs
+Password: wikijs
+Host: localhost
+Port: 22
+"@
+    $sshInfoPath = "$env:USERPROFILE\ssh_info.txt"
+    $sshInfo | Out-File -FilePath $sshInfoPath -Encoding utf8
+
+    Write-Host "SSH connection information saved to $sshInfoPath"
 
     # Afficher la version de la distribution installée
     Show-Progress -Message "Displaying $distro version"
@@ -156,11 +213,11 @@ function Install-WSL {
 }
 
 $asciiArt = @"
-  __        __   _                            _          ____  _             _ 
-  \ \      / /__| | ___ ___  _ __ ___   ___  | |_ ___   |  _ \(_)_ __   __ _| |
-   \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \  | | | | | '_ \ / _` | |
-    \ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) | | |_| | | | | | (_| | |
-     \_/\_/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/  |____/|_|_| |_|\__,_|_|
+__        __   _                            _          _  _  _             _ 
+\ \      / /__| | ___ ___  _ __ ___   ___  | |_ ___   | || || | _ __   __ _| |
+ \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \  | || || || '_ \ / _` | |
+  \ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) | | || || || | | | (_| | |
+   \_/\_/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/  |_||_||_||_| |_|\__,_|_|
 "@
 
 do {
