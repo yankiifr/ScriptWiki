@@ -82,11 +82,13 @@ SSL Configuration : Utilisez Let's Encrypt pour obtenir des certificats SSL grat
 Fail2ban : Protège contre les tentatives de connexion non autorisées.
 Mises à Jour Automatiques : Utilisez unattended-upgrades pour appliquer automatiquement les mises à jour de sécurité.
 Redémarrages Réguliers : Planifiez des redémarrages réguliers pour maintenir la stabilité du système.
-Informations de Connexion
+
+## Informations de Connexion
 Les informations de connexion SSH sont enregistrées dans un fichier texte pour référence future. Assurez-vous de stocker ce fichier en lieu sûr.
-Résolution des Problèmes
+
+## Résolution des Problèmes
 Problèmes de Connexion : Vérifiez les configurations de SSH et les règles de pare-feu.
 Problèmes de Performance : Assurez-vous que le système est à jour et redémarrez régulièrement.
 
-Support
+## Support
 Pour toute assistance supplémentaire, consultez la documentation officielle de Wiki.js ou contactez le support technique. En suivant ce manuel, vous pourrez déployer et sécuriser efficacement Wiki.js sur Windows avec WSL ou sur un VPS Debian.
