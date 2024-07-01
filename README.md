@@ -32,24 +32,24 @@ Téléchargez le script PowerShell depuis le dépôt GitHub :
 Ouvrez PowerShell en mode administrateur et exécutez le script :
   .\deploy_wiki_windows.ps1
 
-Le script vous guidera à travers les étapes suivantes :
-Activer WSL et la plateforme de machine virtuelle.
-Redémarrer le système.
-Mettre à jour le noyau WSL2.
-Définir WSL2 comme version par défaut.
-Créer et configurer un disque virtuel (VHDX).
-Installer Debian via WSL.
-Configurer Debian pour utiliser le disque virtuel.
-Mettre à jour le système Debian.
-Installer les outils supplémentaires.
-Installer et configurer PostgreSQL.
-Installer Node.js.
-Cloner et configurer Wiki.js.
-Démarrer Wiki.js.
-Configurer SSH et sécurité.
-Configurer les mises à jour automatiques.
-Planifier des redémarrages réguliers.
-Créer un fichier texte avec les informations de connexion.
+1 Le script vous guidera à travers les étapes suivantes :
+2 Activer WSL et la plateforme de machine virtuelle.
+3 Redémarrer le système.
+4 Mettre à jour le noyau WSL2.
+5 Définir WSL2 comme version par défaut.
+6 Créer et configurer un disque virtuel (VHDX).
+7 Installer Debian via WSL.
+8 Configurer Debian pour utiliser le disque virtuel.
+9 Mettre à jour le système Debian.
+10 Installer les outils supplémentaires.
+11 Installer et configurer PostgreSQL.
+12 Installer Node.js.
+13 Cloner et configurer Wiki.js.
+14 Démarrer Wiki.js.
+15 Configurer SSH et sécurité.
+16 Configurer les mises à jour automatiques.
+17 Planifier des redémarrages réguliers.
+18 Créer un fichier texte avec les informations de connexion.
 
 ## Installation sur un VPS Debian
 
@@ -62,33 +62,37 @@ chmod +x deploy_wiki_debian.sh
 
 ### Étape 2: Exécuter le Script Bash
 
-Exécutez le script Bash :./deploy_wiki_debian.sh
-Le script exécutera les étapes suivantes :
-Mise à jour du système.
-Installation des dépendances.
-Installation de Node.js.
-Clonage du dépôt Wiki.js.
-Démarrage de Wiki.js.
-Installation et configuration d'OpenVPN.
-Configuration de la sécurité pour Wiki.js.
-Installation et configuration de Nginx pour SSL.
-Configuration de Nginx comme reverse proxy pour Wiki.js.
-Installation et configuration de Fail2ban.
-Configuration des mises à jour automatiques.
-Planification des redémarrages réguliers.
-Création d'un fichier texte avec les informations de connexion.
-Sécurité et Maintenance
-SSL Configuration : Utilisez Let's Encrypt pour obtenir des certificats SSL gratuits et sécuriser les connexions HTTPS.
-Fail2ban : Protège contre les tentatives de connexion non autorisées.
-Mises à Jour Automatiques : Utilisez unattended-upgrades pour appliquer automatiquement les mises à jour de sécurité.
-Redémarrages Réguliers : Planifiez des redémarrages réguliers pour maintenir la stabilité du système.
+# Exécutez le script Bash : 
+```./deploy_wiki_debian.sh
+
+# Le script exécutera les étapes suivantes :
+
+1 Mise à jour du système.
+2 Installation des dépendances.
+3 Installation de Node.js.
+4 Clonage du dépôt Wiki.js.
+5 Démarrage de Wiki.js.
+6 Installation et configuration d'OpenVPN.
+7 Configuration de la sécurité pour Wiki.js.
+8 Installation et configuration de Nginx pour SSL.
+9 Configuration de Nginx comme reverse proxy pour Wiki.js.
+10 Installation et configuration de Fail2ban.
+11 Configuration des mises à jour automatiques.
+12 Planification des redémarrages réguliers.
+13 Création d'un fichier texte avec les informations de connexion.
+
+## Sécurité et Maintenance
+- SSL Configuration : Utilisez Let's Encrypt pour obtenir des certificats SSL gratuits et sécuriser les connexions HTTPS.
+- Fail2ban : Protège contre les tentatives de connexion non autorisées.
+- Mises à Jour Automatiques : Utilisez unattended-upgrades pour appliquer automatiquement les mises à jour de sécurité.
+- Redémarrages Réguliers : Planifiez des redémarrages réguliers pour maintenir la stabilité du système.
 
 ## Informations de Connexion
 Les informations de connexion SSH sont enregistrées dans un fichier texte pour référence future. Assurez-vous de stocker ce fichier en lieu sûr.
 
 ## Résolution des Problèmes
-Problèmes de Connexion : Vérifiez les configurations de SSH et les règles de pare-feu.
-Problèmes de Performance : Assurez-vous que le système est à jour et redémarrez régulièrement.
+- Problèmes de Connexion : Vérifiez les configurations de SSH et les règles de pare-feu.
+- Problèmes de Performance : Assurez-vous que le système est à jour et redémarrez régulièrement.
 
 ## Support
 Pour toute assistance supplémentaire, consultez la documentation officielle de Wiki.js ou contactez le support technique. En suivant ce manuel, vous pourrez déployer et sécuriser efficacement Wiki.js sur Windows avec WSL ou sur un VPS Debian.
