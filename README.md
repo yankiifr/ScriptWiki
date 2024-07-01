@@ -26,11 +26,9 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants :
 ### Étape 1: Télécharger le Script PowerShell
 
 Téléchargez le script PowerShell depuis le dépôt GitHub :
+"https://raw.githubusercontent.com/yankiifr/ScriptWiki/main/deploy_wiki_windows.ps1" -OutFile "deploy_wiki_windows.ps1"
 
-```powershell
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/yankiifr/ScriptWiki/main/deploy_wiki_windows.ps1" -OutFile "deploy_wiki_windows.ps1"
-
-Étape 2: Exécuter le Script PowerShell
+### Étape 2: Exécuter le Script PowerShell
 Ouvrez PowerShell en mode administrateur et exécutez le script :
   .\deploy_wiki_windows.ps1
 
@@ -52,18 +50,19 @@ Configurer SSH et sécurité.
 Configurer les mises à jour automatiques.
 Planifier des redémarrages réguliers.
 Créer un fichier texte avec les informations de connexion.
-Installation sur un VPS Debian
-Étape 1: Télécharger le Script Bash
+
+## Installation sur un VPS Debian
+
+### Étape 1: Télécharger le Script Bash
+
 Téléchargez le script Bash depuis le dépôt GitHub :
 bash
 wget https://raw.githubusercontent.com/yankiifr/ScriptWiki/main/deploy_wiki_debian.sh -O deploy_wiki_debian.sh
 chmod +x deploy_wiki_debian.sh
 
-Étape 2: Exécuter le Script Bash
-Exécutez le script Bash :
-bash
-./deploy_wiki_debian.sh
+### Étape 2: Exécuter le Script Bash
 
+Exécutez le script Bash :./deploy_wiki_debian.sh
 Le script exécutera les étapes suivantes :
 Mise à jour du système.
 Installation des dépendances.
@@ -83,10 +82,8 @@ SSL Configuration : Utilisez Let's Encrypt pour obtenir des certificats SSL grat
 Fail2ban : Protège contre les tentatives de connexion non autorisées.
 Mises à Jour Automatiques : Utilisez unattended-upgrades pour appliquer automatiquement les mises à jour de sécurité.
 Redémarrages Réguliers : Planifiez des redémarrages réguliers pour maintenir la stabilité du système.
-
 Informations de Connexion
 Les informations de connexion SSH sont enregistrées dans un fichier texte pour référence future. Assurez-vous de stocker ce fichier en lieu sûr.
-
 Résolution des Problèmes
 Problèmes de Connexion : Vérifiez les configurations de SSH et les règles de pare-feu.
 Problèmes de Performance : Assurez-vous que le système est à jour et redémarrez régulièrement.
